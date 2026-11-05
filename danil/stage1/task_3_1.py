@@ -1,0 +1,31 @@
+def parse_packet(line):
+    out = {}
+
+    for s in line.replace(" ", "").split(";"):
+        if not s:
+            continue
+
+        key, value = s.split("=")
+        if key == "Q":
+            out.update({key.lower(): value})
+        else:
+            out.update({key.lower(): float(value.replace(",", "."))})
+
+    return out
+
+
+if __name__ == "__main__":
+    print(parse_packet("T = 0.140 ; PITCH = 12,61 ; ROLL=-3.30;Q=OK"))
+# Вариант с включением вместо цикла (тяжело читается)
+# def parse_packet(line):
+#     out = {
+#         key.lower(): value if key == "Q" else float(value.replace(",", "."))
+#         for key, _, value in (
+#             s.partition("=") for s in line.replace(" ", "").split(";") if s
+#         )
+#     }
+#     return out
+
+
+# if __name__ == "__main__":
+#     print(parse_packet("T = 0.140 ; PITCH = 12,61 ; ROLL=-3.30;Q=OK"))
