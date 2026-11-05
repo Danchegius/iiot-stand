@@ -1,12 +1,16 @@
 def parse_packet(line):
     out = {}
-    value = float
-    for s in line.strip().split(";")[:-1]:
+
+    for s in line.replace(" ", "").split(";"):
+        if not s:
+            continue
+
         key, value = s.split("=")
-        out.update({key.lower(): float(value.replace(",", "."))})
-    for s in line.strip().split(";")[-1:]:
-        key, value = s.split("=")
-        out.update({key.lower(): value})
+        if key == "Q":
+            out.update({key.lower(): value})
+        else:
+            out.update({key.lower(): float(value.replace(",", "."))})
+
     return out
 
 
